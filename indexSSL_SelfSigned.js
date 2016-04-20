@@ -1,10 +1,10 @@
 var soap = require('soap');
 var parser = require('node-xml2json');
-var url = 'https://apitest.authorize.net/soap/v1/Service.asmx?WSDL';
-var url = 'http://www.webservicex.com/globalweather.asmx?WSDL';
+var url = 'https://localhost/ws/countries.wsdl';
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
 soap.createClient(url, function(err, client) {
 
-    var payload = {CityName: 'Melbourne Airport', CountryName: 'Australia'};
+    var payload = {name: 'Spain'};
     //add soap headers
     //var soapHeader = {
     //  'AuthenticationToken': process.argv[2],
@@ -30,14 +30,8 @@ soap.createClient(url, function(err, client) {
     //bearer security
     //client.setSecurity(new soap.BearerSecurity('token'));
 
-    client.GetWeather(payload, function(err, result) {
-      var getWeatherResult = parser.parser(result.GetWeatherResult);
-      console.dir(getWeatherResult);
-    },{timeout: 5000},{time: true});
-
-    payload = {CountryName: 'Australia'};
-    client.GetCitiesByCountry(payload, function(err, result) {
-        var citiesByCountry = parser.parser(result.GetCitiesByCountryResult);
-        //console.dir(citiesByCountry);
+    client.getCountry(payload, function(err, result) {
+      //var getWeatherResult = parser.parser(result.GetWeatherResult);
+      console.dir(result);
     },{timeout: 5000},{time: true});
 });
